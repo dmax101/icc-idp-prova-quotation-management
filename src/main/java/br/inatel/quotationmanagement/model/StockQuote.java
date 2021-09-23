@@ -6,18 +6,14 @@ import java.util.UUID;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 @Entity
 public class StockQuote {
 
     @Id
-    @GeneratedValue( generator = "uuid2" )
-    @GenericGenerator( name = "uuid2", strategy = "uuid2" )
     @Type(type="uuid-char")
     private UUID id;
     
@@ -35,12 +31,26 @@ public class StockQuote {
         this.quotes = quotes;
     }
 
+    public StockQuote(UUID id, String stockId, Map<String,BigDecimal> quotes) {
+        this.id = id;
+        this.stockId = stockId;
+        this.quotes = quotes;
+    }
+
     public UUID getId() {
         return this.id;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public String getStockId() {
         return this.stockId;
+    }
+
+    public void setStockId(String stockId) {
+        this.stockId = stockId;
     }
 
     public Map<String,BigDecimal> getQuotes() {
