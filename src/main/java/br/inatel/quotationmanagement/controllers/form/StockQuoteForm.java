@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import br.inatel.quotationmanagement.model.StockQuote;
 import br.inatel.quotationmanagement.repository.StockQuoteRepository;
-
 public class StockQuoteForm {
 
     private UUID id;
@@ -43,7 +42,7 @@ public class StockQuoteForm {
 
         Optional<StockQuote> stockQuoteFromRepository = stockQuoteRepository.findById(this.id);
 
-        if (stockQuoteFromRepository.isPresent()) {
+        if (stockQuoteFromRepository.isPresent() && stockQuoteFromRepository.get().getStockId().equals(this.stockId)) {
             StockQuote stockQuote = stockQuoteFromRepository.get();
 
             Map<String, BigDecimal> dbQuotes = new HashMap<>(stockQuote.getQuotes());
@@ -52,7 +51,11 @@ public class StockQuoteForm {
             stockQuote.setQuotes(apiQuotes);
             
             return stockQuote;
+        } else if (stockQuoteFromRepository.isPresent() && !stockQuoteFromRepository.get().getStockId().equals(this.stockId)) {
+
+            return new StockQuote(this.stockId, this.quotes);
         } else {
+            
             return new StockQuote(this.id, this.stockId, this.quotes);
         }
     }
