@@ -23,6 +23,12 @@ docker container run -p 8080:8080 -d lucasvilela/stock-manager
 ### Quotation Management application
 Thats is the main application and after clone the project (`git clone https://github.com/dmax101/icc-idp-prova-quotation-management.git`) you have to run the follow code in terminal:
 ```bash
+docker build -t quotation-management.jar .
+```
+
+And after docker built you image you can run with follow command:
+
+```bash
 docker run --rm -d  -p 8081:8081/tcp quotation-management.jar:latest
 ```
 
