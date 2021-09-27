@@ -38,7 +38,7 @@ public class StockQuoteController {
     // Create a Stock Quote
     @PostMapping
     @CacheEvict(value="stockQuoteList", allEntries=true)
-    public ResponseEntity<?> create(@RequestBody StockQuoteForm quoteForm, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> createStockQuote(@RequestBody StockQuoteForm quoteForm, UriComponentsBuilder uriBuilder) {
 
         StockQuote stockQuote = quoteForm.convertAndMergeQuotes(stockQuoteRepository);
 
@@ -55,29 +55,24 @@ public class StockQuoteController {
         
         URI uri = uriBuilder.path("/stocks/{id}").buildAndExpand(stockQuote.getId()).toUri();
 
-
         return ResponseEntity.created(uri).body(stockQuote);
     }
 
     @GetMapping
-    @Cacheable(value="stockQuoteList")
+    @Cacheable("stockQuoteList")
     public ResponseEntity<List<StockQuote>> list(String id, String stockId) {
 
         if (id == null && stockId == null) {
-            
             List<StockQuote> stockQuotes = stockQuoteRepository.findAll();
-
             if (stockQuotes.isEmpty()) {
 
                 return ResponseEntity.notFound().build();
             }
-            
+
             return ResponseEntity.ok().body(stockQuotes);
             
         } else if (stockId == null) {
-            
             Optional<StockQuote> stockQuote = stockQuoteRepository.findById(UUID.fromString(id));
-
             if (stockQuote.isPresent()) {
 
                 return ResponseEntity.ok(Arrays.asList(stockQuote.get()));
@@ -86,9 +81,7 @@ public class StockQuoteController {
                 return ResponseEntity.notFound().build();
             }
         } else if (id == null) {
-
             List<StockQuote> stocksQuotes = stockQuoteRepository.findByStockId(stockId);
-
             if (stocksQuotes.isEmpty()) {
 
                 return ResponseEntity.notFound().build();
@@ -97,9 +90,7 @@ public class StockQuoteController {
             return ResponseEntity.ok().body(stockQuoteRepository.findByStockId(stockId));
 
         } else {
-
             List<StockQuote> stockQuote = stockQuoteRepository.findByIdAndStockId(UUID.fromString(id), stockId);
-
             if (stockQuote.isEmpty()) {
 
                 return ResponseEntity.notFound().build();

@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import br.inatel.quotationmanagement.services.RestApiService;
+
 @SpringBootApplication
 @EnableCaching
 @RestController
@@ -15,6 +17,8 @@ public class QuotationManagementApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(QuotationManagementApplication.class, args);
+
+		RestApiService.postRequestToStockManagerNotification();
 	}
 
 	@Bean
